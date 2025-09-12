@@ -1,24 +1,18 @@
 import CustomersTable from '@/app/ui/customers/table';
 import { fetchFilteredCustomers } from '@/app/lib/data';
-import { Suspense } from 'react';
 import { use } from 'react';
 
-export default async function Page({
-    searchParams,
+export default function Page({
+  searchParams,
 }: {
-    searchParams: Promise<{
-        query?: string;
-        page?: string;
-    }>;
+  searchParams: Promise<{ query?: string; page?: string }>;
 }) {
-    const { query = '' } = use(searchParams);
-    const customers = await fetchFilteredCustomers(query);
+  const { query = '' } = use(searchParams);
+  const customers = use(fetchFilteredCustomers(query));
 
-    return (
-        <div className="p-6">
-            <Suspense >
-                <CustomersTable customers={customers} />
-            </Suspense>
-        </div>
-    );
+  return (
+    <div className="p-6">
+      <CustomersTable customers={customers} />
+    </div>
+  );
 }
